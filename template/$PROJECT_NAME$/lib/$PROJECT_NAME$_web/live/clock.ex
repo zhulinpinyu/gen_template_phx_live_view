@@ -1,11 +1,10 @@
 defmodule <%= @project_name_camel_case %>Web.Clock do
   use Phoenix.LiveView
-  import Calendar.Strftime
 
   def render(assigns) do
     ~L"""
     <div>
-      <h2><%%= strftime!(@date, "%r") %></h2>
+      <h2><%%= @date %></h2>
     </div>
     """
   end
@@ -20,11 +19,8 @@ defmodule <%= @project_name_camel_case %>Web.Clock do
     {:noreply, put_date(socket)}
   end
 
-  def handle_event("nav", _path, socket) do
-    {:noreply, socket}
-  end
-
   defp put_date(socket) do
-    assign(socket, date: :calendar.local_time())
+    {{y, m, d}, {h, min, sec}} = :calendar.local_time()
+    assign(socket, date: "#{y}-#{m}-#{d} #{h}:#{min}:#{sec}")
   end
 end
